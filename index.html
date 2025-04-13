@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>گل‌فروشی بهشت سبز</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Floating background elements -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- Cart Page -->
+    <div class="cart-page" id="cartPage">
+      <div class="p-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <h2 class="text-2xl fw-bold text-white">سبد خرید شما</h2>
+          <button
+            class="text-white text-2xl bg-transparent border-0"
+            id="closeCartBtn"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="mb-5" id="cartItems">
+          <!-- Cart items will be added here dynamically -->
+          <div class="text-center py-5 text-success" id="emptyCartMessage">
+            <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+            <p>سبد خرید شما خالی است</p>
+          </div>
+        </div>
+
+        <div class="glass-card p-4 rounded-3 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-success">جمع کل:</span>
+            <span class="fw-bold text-white fs-5" id="cartTotal">0 تومان</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-success">تخفیف:</span>
+            <span class="fw-bold text-success" id="cartDiscount">0 تومان</span>
+          </div>
+          <div
+            class="border-top border-white-10 pt-3 d-flex justify-content-between align-items-center"
+          >
+            <span class="text-success">مبلغ قابل پرداخت:</span>
+            <span class="fw-bold text-white fs-5" id="cartFinalTotal"
+              >0 تومان</span
+            >
+          </div>
+        </div>
+
+        <button
+          class="btn-primary w-100 py-3 rounded-pill fw-medium text-white mb-3"
+          id="checkoutBtn"
+        >
+          پرداخت نهایی
+        </button>
+
+        <button
+          class="btn btn-outline-light w-100 py-3 rounded-pill fw-medium"
+          id="continueShoppingBtn"
+        >
+          ادامه خرید
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+      class="navbar navbar-expand-lg glass-card py-2 px-4 mx-4 mt-4 rounded-full sticky top-4 z-50"
+    >
+      <div class="container-fluid">
+        <div class="d-flex align-items-center">
+          <div
+            class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center me-3"
+          >
+            <i class="fas fa-leaf text-2xl text-green-200"></i>
+          </div>
+          <a class="navbar-brand text-xl font-bold text-white" href="#"
+            >گل‌فروشی بهشت سبز</a
+          >
+        </div>
+
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span>
+            <i class="fas fa-bars text-white"></i>
+          </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ps-lg-5 me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-white active" href="#">خانه</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">گل‌ها</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">دسته‌گل‌ها</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">گیاهان آپارتمانی</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">تماس با ما</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center mx-4">
+            <button
+              class="btn p-2 rounded-full bg-white/10 hover:bg-white/20 transition me-2"
+            >
+              <i class="fas ms-3 fa-search text-white"></i>
+            </button>
+            <button
+              class="btn btn-sm rounded-circle bg-white-10 position-relative"
+              id="cartBtn"
+            >
+              <i class="fas fa-shopping-cart text-white"></i>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill"
+                id="cartCount"
+                >0</span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="hero-section glass-card rounded-3xl mt-5 mx-4 my-4 overflow-hidden"
+    >
+      <div class="container py-5">
+        <div class="row align-items-center">
+          <div class="col-md-6 mb-4 mb-md-0">
+            <h1 class="display-5 fw-bold mb-4 text-white">
+              زیبایی طبیعت را به خانه‌تان بیاورید
+            </h1>
+            <p class="lead text-success mb-4">
+              با انتخاب از میان بهترین و تازه‌ترین گل‌های ما، فضای زندگی خود را
+              دگرگون کنید. تحویل سریع و تضمین کیفیت.
+            </p>
+            <div class="d-flex">
+              <button class="btn-primary ms-4">مشاهده محصولات</button>
+              <button class="btn btn-outline-light">درباره ما</button>
+            </div>
+          </div>
+          <div class="col-md-6 position-relative">
+            <div class="floating">
+              <img
+                src="https://images.unsplash.com/photo-1526397751294-331021109fbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
+                alt="Flower Bouquet"
+                class="img-fluid rounded-3 shadow-lg border border-white-20"
+              />
+            </div>
+            <div
+              class="position-absolute bottom-0 start-0 w-100 h-100 bg-warning-20 rounded-circle blur-xl"
+              style="width: 150px; height: 150px"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="mx-3 my-5">
+      <div class="container">
+        <h2 class="text-center fw-bold mb-5 text-white fs-1">
+          دسته‌بندی محصولات
+        </h2>
+        <div class="row">
+          <div class="col-6 col-md-3 mb-4">
+            <div
+              class="glass-card flower-card p-4 rounded-3 text-center cursor-pointer h-100"
+            >
+              <div
+                class="rounded-circle bg-white-10 mx-auto mb-3 d-flex align-items-center justify-content-center"
+                style="width: 80px; height: 80px"
+              >
+                <i class="fas fa-spa text-success fs-3"></i>
+              </div>
+              <h3 class="fw-semibold text-white mb-2">گل‌های شاخه‌ای</h3>
+              <p class="text-success small">انواع گل‌های تازه و زیبا</p>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 mb-4">
+            <div
+              class="glass-card flower-card p-4 rounded-3 text-center cursor-pointer h-100"
+            >
+              <div
+                class="rounded-circle bg-white-10 mx-auto mb-3 d-flex align-items-center justify-content-center"
+                style="width: 80px; height: 80px"
+              >
+                <i class="fas fa-birthday-cake text-pink fs-3"></i>
+              </div>
+              <h3 class="fw-semibold text-white mb-2">دسته‌گل‌ها</h3>
+              <p class="text-success small">ترکیبات زیبا برای مناسبت‌ها</p>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 mb-4">
+            <div
+              class="glass-card flower-card p-4 rounded-3 text-center cursor-pointer h-100"
+            >
+              <div
+                class="rounded-circle bg-white-10 mx-auto mb-3 d-flex align-items-center justify-content-center"
+                style="width: 80px; height: 80px"
+              >
+                <i class="fas fa-tree text-success fs-3"></i>
+              </div>
+              <h3 class="fw-semibold text-white mb-2">گیاهان آپارتمانی</h3>
+              <p class="text-success small">گیاهان مقاوم و زیبا</p>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 mb-4">
+            <div
+              class="glass-card flower-card p-4 rounded-3 text-center cursor-pointer h-100"
+            >
+              <div
+                class="rounded-circle bg-white-10 mx-auto mb-3 d-flex align-items-center justify-content-center"
+                style="width: 80px; height: 80px"
+              >
+                <i class="fas fa-gift text-warning fs-3"></i>
+              </div>
+              <h3 class="fw-semibold text-white mb-2">هدیه و سبد گل</h3>
+              <p class="text-success small">کادوهای خاص و منحصر به فرد</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="mx-3 my-5">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <h2 class="fw-bold text-white fs-1">محصولات ویژه</h2>
+          <a
+            href="#"
+            class="text-success text-decoration-none d-flex align-items-center"
+          >
+            مشاهده همه
+            <i class="fas fa-arrow-right me-2"></i>
+          </a>
+        </div>
+
+        <div class="row">
+          <!-- Product 1 -->
+          <div
+            class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4"
+            data-id="1"
+            data-name=" گل رز قرمز"
+            data-price="320000"
+            data-image="img/golrose.png"
+          >
+            <div class="glass-card flower-card rounded-3 overflow-hidden h-100">
+              <div class="position-relative">
+                <img
+                  src="img/golrose.png"
+                  alt="Rose Bouquet"
+                  class="img-fluid w-100"
+                  style="height: 300px; object-fit: cover"
+                />
+                <div
+                  class="position-absolute top-0 start-0 bg-success text-white small px-2 py-1 rounded-pill m-2"
+                >
+                  جدید
+                </div>
+              </div>
+              <div class="p-3">
+                <h3 class="fw-bold text-white mb-1">گل رز قرمز</h3>
+                <p class="small text-success small pt-3 mb-3">
+                  شاخه رز قرمز تازه
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-white">320,000 تومان</span>
+                  <button
+                    class="add-to-cart rounded-circle bg-success-20 d-flex align-items-center justify-content-center text-success border-0"
+                    style="width: 40px; height: 40px"
+                  >
+                    <i class="fas fa-shopping-cart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div
+            class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4"
+            data-id="2"
+            data-name="ارکیده سفید"
+            data-price="450000"
+            data-image="img/whiteorc.png"
+          >
+            <div class="glass-card flower-card rounded-3 overflow-hidden h-100">
+              <div class="position-relative">
+                <img
+                  src="img/whiteorc.png"
+                  alt="Orchid"
+                  class="img-fluid w-100"
+                  style="height: 300px; object-fit: cover"
+                />
+                <div
+                  class="position-absolute top-0 start-0 bg-pink text-white small px-2 py-1 rounded-pill m-2"
+                >
+                  پرفروش
+                </div>
+              </div>
+              <div class="p-3">
+                <h3 class="fw-bold text-white mb-1">ارکیده سفید</h3>
+                <p class="small text-success pt-3 mb-3">
+                  گیاه آپارتمانی مقاوم و زیبا
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-white">450,000 تومان</span>
+                  <button
+                    class="add-to-cart rounded-circle bg-success-20 d-flex align-items-center justify-content-center text-success border-0"
+                    style="width: 40px; height: 40px"
+                  >
+                    <i class="fas fa-shopping-cart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div
+            class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4"
+            data-id="3"
+            data-name="گل آفتابگردان"
+            data-price="180000"
+            data-image="img/sun.png"
+          >
+            <div class="glass-card flower-card rounded-3 overflow-hidden h-100">
+              <div class="position-relative">
+                <img
+                  src="img/sun.png"
+                  alt="Sunflowers"
+                  class="img-fluid w-100"
+                  style="height: 300px; object-fit: cover"
+                />
+              </div>
+              <div class="p-3">
+                <h3 class="fw-bold text-white mb-1">گل آفتابگردان</h3>
+                <p class="small text-success pt-3 mb-3">شاخه آفتابگردان تازه</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-white">180,000 تومان</span>
+                  <button
+                    class="add-to-cart rounded-circle bg-success-20 d-flex align-items-center justify-content-center text-success border-0"
+                    style="width: 40px; height: 40px"
+                  >
+                    <i class="fas fa-shopping-cart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div
+            class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4"
+            data-id="4"
+            data-name="شاخه گل لاله"
+            data-price="290000"
+            data-image="img/lale.png"
+          >
+            <div class="glass-card flower-card rounded-3 overflow-hidden h-100">
+              <div class="position-relative">
+                <img
+                  src="img/lale.png"
+                  alt="Succulent"
+                  class="img-fluid w-100"
+                  style="height: 300px; object-fit: cover"
+                />
+                <div
+                  class="position-absolute top-0 start-0 bg-warning text-white small px-2 py-1 rounded-pill m-2"
+                >
+                  ویژه
+                </div>
+              </div>
+              <div class="p-3">
+                <h3 class="fw-bold text-white mb-1">شاخه گل لاله</h3>
+                <p class="small text-success pt-3 mb-3">گلی ساده و دلنشین</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-white">290,000 تومان</span>
+                  <button
+                    class="add-to-cart rounded-circle bg-success-20 d-flex align-items-center justify-content-center text-success border-0"
+                    style="width: 40px; height: 40px"
+                  >
+                    <i class="fas fa-shopping-cart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Special Offer -->
+    <section class="mx-3 my-5">
+      <div class="glass-card rounded-3 overflow-hidden">
+        <div class="container py-5">
+          <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+              <span
+                class="bg-warning-20 text-warning px-3 py-1 rounded-pill small mb-3 d-inline-block"
+                >پیشنهاد ویژه</span
+              >
+              <h2 class="fw-bold text-white mb-3 fs-1">
+                تخفیف 30% برای اولین خرید
+              </h2>
+              <p class="text-success mb-4">
+                با ثبت نام در سایت، از تخفیف 30 درصدی برای اولین خرید خود لذت
+                ببرید. این پیشنهاد فقط برای 3 روز معتبر است!
+              </p>
+              <div class="d-flex mb-4">
+                <div class="text-center me-3">
+                  <div
+                    class="bg-white-10 rounded-2 d-flex align-items-center justify-content-center"
+                    style="width: 64px; height: 64px"
+                  >
+                    <span class="fw-bold text-white fs-4" id="days">03</span>
+                  </div>
+                  <span class="text-success small mt-1">روز</span>
+                </div>
+                <div class="text-center me-3">
+                  <div
+                    class="bg-white-10 rounded-2 d-flex align-items-center justify-content-center"
+                    style="width: 64px; height: 64px"
+                  >
+                    <span class="fw-bold text-white fs-4" id="hours">04</span>
+                  </div>
+                  <span class="text-success small mt-1">ساعت</span>
+                </div>
+                <div class="text-center me-3">
+                  <div
+                    class="bg-white-10 rounded-2 d-flex align-items-center justify-content-center"
+                    style="width: 64px; height: 64px"
+                  >
+                    <span class="fw-bold text-white fs-4" id="minutes">45</span>
+                  </div>
+                  <span class="text-success small mt-1">دقیقه</span>
+                </div>
+                <div class="text-center">
+                  <div
+                    class="bg-white-10 rounded-2 d-flex align-items-center justify-content-center"
+                    style="width: 64px; height: 64px"
+                  >
+                    <span class="fw-bold text-white fs-4" id="seconds">30</span>
+                  </div>
+                  <span class="text-success small mt-1">ثانیه</span>
+                </div>
+              </div>
+              <button class="btn-primary px-5">
+                ثبت نام و استفاده از تخفیف
+              </button>
+            </div>
+            <div class="col-md-6 position-relative">
+              <img
+                src="diccount.png"
+                alt="Special Offer"
+                class="img-fluid rounded-3 border border-white-20 transform rotate-3"
+              />
+              <div
+                class="position-absolute bottom-0 start-0 w-100 h-100 bg-pink-20 rounded-circle blur-xl"
+                style="width: 150px; height: 150px"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="mx-3 my-5">
+      <div class="container">
+        <h2 class="text-center fw-bold mb-5 text-white fs-1">نظرات مشتریان</h2>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="glass-card p-4 rounded-3 h-100">
+              <div class="d-flex align-items-center mb-3">
+                <div
+                  class="rounded-circle bg-success-10 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px"
+                >
+                  <i class="fas fa-user text-success fs-5"></i>
+                </div>
+                <div>
+                  <h4 class="fw-semibold text-white mb-0">مریم محمدی</h4>
+                  <div class="text-warning small">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-success">
+                دسته گلی که برای سالگرد از این سایت خریدم واقعا عالی بود. گل‌ها
+                تازه و باکیفیت بودند و در زمان مقرر تحویل داده شدند. ممنون از
+                خدمات خوبتون.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="glass-card p-4 rounded-3 h-100">
+              <div class="d-flex align-items-center mb-3">
+                <div
+                  class="rounded-circle bg-primary-10 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px"
+                >
+                  <i class="fas fa-user text-primary fs-5"></i>
+                </div>
+                <div>
+                  <h4 class="fw-semibold text-white mb-0">علی رضایی</h4>
+                  <div class="text-warning small">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-success">
+                گیاه آپارتمانی که خریدم بعد از دو ماه هنوز سرحاله و رشد خوبی
+                داره. راهنمایی‌های نگهداری که همراه محصول فرستاده بودید خیلی
+                مفید بود.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="glass-card p-4 rounded-3 h-100">
+              <div class="d-flex align-items-center mb-3">
+                <div
+                  class="rounded-circle bg-pink-10 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 48px; height: 48px"
+                >
+                  <i class="fas fa-user text-pink fs-5"></i>
+                </div>
+                <div>
+                  <h4 class="fw-semibold text-white mb-0">نازنین کریمی</h4>
+                  <div class="text-warning small">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-success">
+                برای تولد مادرم یک سبد گل سفارش دادم. بسته‌بندی خیلی شکیل بود و
+                مادرم از هدیه خیلی خوشش اومد. قیمت‌ها هم نسبت به کیفیت مناسب
+                بود.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-card mx-3 mt-5 mb-3 rounded-3">
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-md-3 mb-4">
+            <div class="d-flex align-items-center mb-3">
+              <h3 class="fw-semibold fw-bold text-white m-0 fs-5 mb-3">
+                بهشت سبز
+              </h3>
+            </div>
+            <p class="text-success mb-3">
+              ما با عشق و <br />دقت گل‌های تازه و باکیفیت<br />
+              را به دست شما می‌رسانیم.
+            </p>
+            <div class="d-flex">
+              <a
+                href="#"
+                class="rounded-circle bg-white-10 d-flex align-items-center justify-content-center text-white me-2"
+                style="width: 40px; height: 40px"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="#"
+                class="rounded-circle bg-white-10 d-flex align-items-center justify-content-center text-white me-2"
+                style="width: 40px; height: 40px"
+              >
+                <i class="fab fa-telegram"></i>
+              </a>
+              <a
+                href="#"
+                class="rounded-circle bg-white-10 d-flex align-items-center justify-content-center text-white"
+                style="width: 40px; height: 40px"
+              >
+                <i class="fab fa-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-4">
+            <h4 class="fw-semibold text-white mb-3 fs-5">لینک‌های مفید</h4>
+            <ul class="list-unstyled p-0">
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none">خانه</a>
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >درباره ما</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >خدمات ما</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >سوالات متداول</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-success text-decoration-none"
+                  >تماس با ما</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-3 mb-4">
+            <h4 class="fw-semibold text-white mb-3 fs-5">خدمات مشتریان</h4>
+            <ul class="list-unstyled p-0">
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >حساب کاربری</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >پیگیری سفارش</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >شرایط بازگشت</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#" class="text-success text-decoration-none"
+                  >حریم خصوصی</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-success text-decoration-none"
+                  >قوانین و مقررات</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-3 mb-4">
+            <h4 class="fw-semibold text-white mb-3 fs-5">اطلاعات تماس</h4>
+            <ul class="list-unstyled text-success p-0">
+              <li class="mb-3 d-flex">
+                <i class="fas fa-map-marker-alt text-success mt-1 me-2"></i>
+                <span>تهران، خیابان ولیعصر، پلاک ۱۲۳۴</span>
+              </li>
+              <li class="mb-3 d-flex align-items-center">
+                <i class="fas fa-phone text-success me-2"></i>
+                <span>۰۲۱-۱۲۳۴۵۶۷۸</span>
+              </li>
+              <li class="mb-3 d-flex align-items-center">
+                <i class="fas fa-envelope text-success me-2"></i>
+                <span>info@g.com</span>
+              </li>
+              <li class="d-flex align-items-center">
+                <i class="fas fa-clock text-success me-2"></i>
+                <span>همه روزه از ۸ صبح تا ۱۰ شب</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="border-top border-white-10 pt-4 mt-4 d-md-flex justify-content-between align-items-center"
+        >
+          <p class="text-success text-center text-md-start mb-3 mb-md-0 small">
+            © ۱۴۰۲ کلیه حقوق برای گل‌فروشی بهشت سبز محفوظ است.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
