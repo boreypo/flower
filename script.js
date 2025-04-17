@@ -131,8 +131,8 @@ function updateCartDisplay() {
       item.name
     }" class="rounded-2 me-3" style="width: 64px; height: 64px; object-fit: cover;">
                     <div class="flex-grow-1">
-                        <h4 class="fw-medium text-white mb-1">${item.name}</h4>
-                        <p class="text-success small">${item.price.toLocaleString()} تومان</p>
+                        <h4 class="fw-medium pe-3 pt-2 text-white mb-1">${item.name}</h4>
+                        <p class="text-success pe-3 pt-2 small">${item.price.toLocaleString()} تومان</p>
                     </div>
                     <div class="d-flex align-items-center">
                         <button class="quantity-btn decrease-quantity border-0 bg-transparent" data-id="${
