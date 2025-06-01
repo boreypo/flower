@@ -68,6 +68,7 @@ body {
 
 .floating {
     animation: floating 3s ease-in-out infinite;
+    max-height: 70%;
 }
 
 @keyframes floating {
